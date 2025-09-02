@@ -31,8 +31,8 @@ export const ExpandedHeader = () => {
     <header className="d-flex shadow-sm align-items-center learner-variant-header pl-4">
       <div className="flex-grow-1 d-flex align-items-center">
         <BrandLogo />
-
-        <Button
+         <p style={{ margin: 0 }}>AI for Business</p>
+        {/* <Button
           as="a"
           href={`${getConfig().LMS_BASE_URL}/dashboard/`}
           variant="inverse-primary"
@@ -67,7 +67,7 @@ export const ExpandedHeader = () => {
           className="p-4"
         >
           {formatMessage(messages.help)}
-        </Button>
+        </Button> */}
       </div>
 
       <AuthenticatedUserDropdown />
