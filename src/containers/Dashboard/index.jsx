@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { reduxHooks } from 'hooks';
 import { RequestKeys } from 'data/constants/requests';
 import EnterpriseDashboardModal from 'containers/EnterpriseDashboardModal';
 import SelectSessionModal from 'containers/SelectSessionModal';
-import CoursesPanel from 'containers/CoursesPanel';
+import CourseList from 'containers/CourseList';
 
 import LoadedSidebar from 'containers/WidgetContainers/LoadedSidebar';
 import NoCoursesSidebar from 'containers/WidgetContainers/NoCoursesSidebar';
@@ -13,6 +13,7 @@ import LoadingView from './LoadingView';
 import DashboardLayout from './DashboardLayout';
 import hooks from './hooks';
 import './index.scss';
+import { useActiveTab } from '../../ActiveTabContext';
 
 export const Dashboard = () => {
   hooks.useInitializeDashboard();
@@ -21,6 +22,29 @@ export const Dashboard = () => {
   const hasAvailableDashboards = reduxHooks.useHasAvailableDashboards();
   const initIsPending = reduxHooks.useRequestIsPending(RequestKeys.initialize);
   const showSelectSessionModal = reduxHooks.useShowSelectSessionModal();
+
+  // Get groupedCourses to derive tabNames (now using serialize_courses format)
+  const groupedCourses = reduxHooks.useGroupedCoursesData();
+
+  // Get tab names from ordered_courses_label array
+  const tabNames = reduxHooks.useOrderedCoursesLabel() || [];
+  const courseNumber = reduxHooks.useorderedCoursesNumber() || [];
+
+  // Sidebar component with course_name and homeUrl props for the active tab
+  const { activeTab, setActiveTab } = useActiveTab();
+
+  // Reset activeTab when tabNames change
+  const prevTabNamesRef = useRef([]);
+  useEffect(() => {
+    if (
+      tabNames.length > 0 &&
+      JSON.stringify(tabNames) !== JSON.stringify(prevTabNamesRef.current)
+    ) {
+      setActiveTab(0); // reset to first tab
+    }
+    prevTabNamesRef.current = tabNames;
+  }, [tabNames, setActiveTab]);
+
 
   return (
     <div id="dashboard-container" className="d-flex flex-column p-2 pt-0">
@@ -36,7 +60,7 @@ export const Dashboard = () => {
           ? (<LoadingView />)
           : (
             <DashboardLayout sidebar={hasCourses ? LoadedSidebar : NoCoursesSidebar}>
-              <CoursesPanel />
+              <CourseList tabNames={tabNames} />
             </DashboardLayout>
           )}
       </div>

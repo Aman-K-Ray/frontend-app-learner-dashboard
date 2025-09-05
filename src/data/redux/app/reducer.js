@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-import { StrictDict } from 'utils';
+import { StrictDict } from "utils";
 
 const initialState = {
   pageNumber: 1,
@@ -10,8 +10,11 @@ const initialState = {
   enterpriseDashboard: {},
   platformSettings: {},
   suggestedCourses: [],
+  filterState: {},
   selectSessionModal: {},
-  filters: [],
+  groupedCourses: {},
+  orderedCoursesLabel: [],
+  orderedCoursesNumber: [],
 };
 
 export const cardId = (val) => `card-${val}`;
@@ -22,22 +25,40 @@ export const today = Date.now();
  * Creates a redux slice with actions to load dashboard data and manage visual layout
  */
 const app = createSlice({
-  name: 'app',
+  name: "app",
   initialState,
   reducers: {
-    loadCourses: (state, { payload: { courses } }) => ({
-      ...state,
-      courseData: courses.reduce(
-        (obj, curr, index) => {
-          const out = { ...curr, cardId: cardId(index) };
-          if (out.enrollment.lastEnrolled === null) {
-            out.enrollment.lastEnrolled = today;
-          }
-          return { ...obj, [cardId(index)]: out };
-        },
-        {},
-      ),
-    }),
+    loadCourses: (state, { payload: { courses } }) => {
+      const courseData = courses.reduce((obj, curr, index) => {
+        const out = { ...curr, cardId: cardId(index) };
+        if (out.enrollment.lastEnrolled === null) {
+          out.enrollment.lastEnrolled = today;
+        }
+        return { ...obj, [cardId(index)]: out };
+      }, {});
+
+      // Build serialize_courses grouped by courseNumber
+      const serialize_courses = courses.reduce((acc, course) => {
+        const courseNumber = course.course?.courseNumber || "unknown";
+
+        if (!acc[courseNumber]) {
+          acc[courseNumber] = {
+            label: courseNumber,
+            courses: [],
+          };
+        }
+
+        acc[courseNumber].courses.push(course);
+        return acc;
+      }, {});
+
+      return {
+        ...state,
+        courseData,
+        groupedCourses: serialize_courses, 
+      };
+    },
+
     loadGlobalData: (state, { payload }) => ({
       ...state,
       emailConfirmation: payload.emailConfirmation,
@@ -45,6 +66,9 @@ const app = createSlice({
       platformSettings: payload.platformSettings,
       suggestedCourses: payload.suggestedCourses,
       socialShareSettings: payload.socialShareSettings,
+      groupedCourses: payload.serialize_courses || {},
+      orderedCoursesLabel: payload.ordered_courses_label || [],
+      orderedCoursesNumber: payload.ordered_courses_number || [],
     }),
     updateSelectSessionModal: (state, { payload }) => ({
       ...state,
