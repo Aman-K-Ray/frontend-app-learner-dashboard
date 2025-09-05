@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './index.scss';
 import SerializeTabs from 'components/SerializeTabs';
 import PropTypes from 'prop-types';
 
