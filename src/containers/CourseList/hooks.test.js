@@ -1,4 +1,4 @@
-import * as paragon from 'ts-paragon';
+import * as paragon from '@openedx/paragon';
 
 import queryString from 'query-string';
 

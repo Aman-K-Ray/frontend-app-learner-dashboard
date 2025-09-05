@@ -19,6 +19,7 @@ import { reduxHooks } from 'hooks';
 import Dashboard from 'containers/Dashboard';
 import ZendeskFab from 'components/ZendeskFab';
 import { ExperimentProvider } from 'ExperimentContext';
+import { ActiveTabProvider } from "./ActiveTabContext";
 
 import track from 'tracking';
 
@@ -94,12 +95,13 @@ export const App = () => {
         {optimizelyScript()}
       </Helmet>
       <div>
-        <AppWrapper>
-          <LearnerDashboardHeader />
-          <main>
-            {hasNetworkFailure
-              ? (
-                <Alert variant="danger">
+        <ActiveTabProvider>
+          <AppWrapper>
+            <LearnerDashboardHeader />
+            <main>
+              {hasNetworkFailure
+                ? (
+                  <Alert variant="danger">
                   <ErrorPage message={formatMessage(messages.errorMessage, { supportEmail })} />
                 </Alert>
               ) : (
@@ -107,8 +109,9 @@ export const App = () => {
                   <Dashboard />
                 </ExperimentProvider>
               )}
-          </main>
-        </AppWrapper>
+            </main>
+          </AppWrapper>
+        </ActiveTabProvider>
         <FooterSlot />
         <ZendeskFab />
       </div>
