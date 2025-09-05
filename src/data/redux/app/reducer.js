@@ -51,10 +51,12 @@ const app = createSlice({
         return acc;
       }, {});
 
+      const orderedCoursesLabel = Object.keys(serialize_courses);
       return {
         ...state,
         courseData,
-        groupedCourses: serialize_courses, 
+        groupedCourses: serialize_courses,
+        orderedCoursesLabel, 
       };
     },
 
@@ -65,8 +67,6 @@ const app = createSlice({
       platformSettings: payload.platformSettings,
       suggestedCourses: payload.suggestedCourses,
       socialShareSettings: payload.socialShareSettings,
-      groupedCourses: payload.serialize_courses || state.groupedCourses || {},
-  orderedCoursesLabel: payload.ordered_courses_label || Object.keys(state.groupedCourses || {}),
     }),
     updateSelectSessionModal: (state, { payload }) => ({
       ...state,
