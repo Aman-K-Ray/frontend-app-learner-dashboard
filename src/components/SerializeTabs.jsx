@@ -11,20 +11,32 @@ const SerializeTabs = ({ tabNames }) => {
   const { activeTab, setActiveTab } = useActiveTab();
   const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
 
+  console.log('[SerializeTabs] Props: tabNames =', tabNames);
+  console.log('[SerializeTabs] ActiveTab =', activeTab, 'IsMobile =', isMobile);
+
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    const handleResize = () => {
+      const mobile = window.innerWidth < MOBILE_BREAKPOINT;
+      setIsMobile(mobile);
+      console.log('[SerializeTabs] Window resized, isMobile =', mobile);
+    };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const groupedCourses = reduxHooks.useGroupedCoursesData();
+  console.log('[SerializeTabs] groupedCourses =', groupedCourses);
+
   // Get the tab object by index instead of tab name
   const groupedCoursesArr = groupedCourses ? Object.values(groupedCourses) : [];
   const tabObj = groupedCoursesArr[activeTab];
+  console.log('[SerializeTabs] tabObj for activeTab', activeTab, '=', tabObj);
+
   // Flatten the courses array if present
   const tabCourses = tabObj && Array.isArray(tabObj.courses)
     ? tabObj.courses.flat()
     : [];
+  console.log('[SerializeTabs] tabCourses =', tabCourses);
 
   const serializeCoursesData = tabCourses.map(courseObj => ({
     bannerImgSrc: courseObj.course.bannerImgSrc,
@@ -36,6 +48,7 @@ const SerializeTabs = ({ tabNames }) => {
     resumeUrl: courseObj.courseRun?.resumeUrl,
     isStaff: courseObj.enrollment.coursewareAccess?.isStaff,
   }));
+  console.log('[SerializeTabs] serializeCoursesData =', serializeCoursesData);
 
   return (
     <div className="grouped-tabs-container">
@@ -44,7 +57,11 @@ const SerializeTabs = ({ tabNames }) => {
           <select
             className="form-select mb-2"
             value={activeTab}
-            onChange={e => setActiveTab(Number(e.target.value))}
+            onChange={e => {
+              const idx = Number(e.target.value);
+              console.log('[SerializeTabs] Select changed, new activeTab =', idx);
+              setActiveTab(idx);
+            }}
           >
             {tabNames.map((tab, idx) => (
               <option key={tab} value={idx}>{tab}</option>
@@ -56,7 +73,10 @@ const SerializeTabs = ({ tabNames }) => {
               <button
                 key={tab}
                 className={`grouped-tab-btn ${idx === activeTab ? 'tab-active' : 'tab-inactive'}`}
-                onClick={() => setActiveTab(idx)}
+                onClick={() => {
+                  console.log('[SerializeTabs] Button clicked, set activeTab =', idx);
+                  setActiveTab(idx);
+                }}
               >
                 {tab}
               </button>
