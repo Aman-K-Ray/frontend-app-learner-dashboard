@@ -25,15 +25,12 @@ export const useNetworkRequest = (action, args) => {
  */
 export const useInitializeApp = () => {
   const loadData = reduxHooks.useLoadData();
-  console.log('loadData', loadData);
   return module.useNetworkRequest(api.initializeList, {
     requestKey: RequestKeys.initialize,
     onSuccess: ({ data }) => {
-      console.log('initializing app SUCCESS', data);
       loadData(data);
     },
     onFailure: (error) => {
-      console.log('initializing app FAILED', error);
     },
   });
 };
