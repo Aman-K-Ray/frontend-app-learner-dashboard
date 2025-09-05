@@ -28,7 +28,6 @@ export const Dashboard = () => {
 
   // Get tab names from ordered_courses_label array
   const tabNames = reduxHooks.useOrderedCoursesLabel() || [];
-  const courseNumber = reduxHooks.useorderedCoursesNumber() || [];
 
   // Sidebar component with course_name and homeUrl props for the active tab
   const { activeTab, setActiveTab } = useActiveTab();

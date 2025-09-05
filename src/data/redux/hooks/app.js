@@ -17,7 +17,6 @@ export const useSocialShareSettings = () => useSelector(selectors.socialShareSet
 export const useGroupedCoursesData = () => useSelector(selectors.groupedCourses);
 
 export const useOrderedCoursesLabel = () => useSelector(selectors.orderedCoursesLabel);
-export const useorderedCoursesNumber = () => useSelector(selectors.orderedCoursesNumber);
 
 /** global-level meta-selectors **/
 export const useHasCourses = () => useSelector(selectors.hasCourses);

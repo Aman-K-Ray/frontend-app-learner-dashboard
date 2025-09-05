@@ -14,7 +14,6 @@ const initialState = {
   selectSessionModal: {},
   groupedCourses: {},
   orderedCoursesLabel: [],
-  orderedCoursesNumber: [],
 };
 
 export const cardId = (val) => `card-${val}`;
@@ -66,9 +65,8 @@ const app = createSlice({
       platformSettings: payload.platformSettings,
       suggestedCourses: payload.suggestedCourses,
       socialShareSettings: payload.socialShareSettings,
-      groupedCourses: payload.serialize_courses || {},
-      orderedCoursesLabel: payload.ordered_courses_label || [],
-      orderedCoursesNumber: payload.ordered_courses_number || [],
+      groupedCourses: payload.serialize_courses || state.groupedCourses || {},
+  orderedCoursesLabel: payload.ordered_courses_label || Object.keys(state.groupedCourses || {}),
     }),
     updateSelectSessionModal: (state, { payload }) => ({
       ...state,
