@@ -30,7 +30,7 @@ export const LearnerDashboardHeader = () => {
     <>
       <ConfirmEmailBanner />
       <Header
-        mainMenuItems={learnerHomeHeaderMenu.mainMenu}
+        // mainMenuItems={learnerHomeHeaderMenu.mainMenu}
         secondaryMenuItems={learnerHomeHeaderMenu.secondaryMenu}
         userMenuItems={learnerHomeHeaderMenu.userMenu}
       />
