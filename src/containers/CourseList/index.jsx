@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SerializeTabs from '../components/SerializeTabs';
+import SerializeTabs from '../../components/SerializeTabs';
 import PropTypes from 'prop-types';
 
 export const CourseList = ({ tabNames }) => {
