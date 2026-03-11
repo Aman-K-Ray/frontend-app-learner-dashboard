@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useActiveTab } from '../ActiveTabContext';
 import { reduxHooks } from 'hooks';
+import { getConfig } from '@edx/frontend-platform';
 import SerializeCourses from './SerializeCourses';
 import './SerializeTabs.scss';
 
