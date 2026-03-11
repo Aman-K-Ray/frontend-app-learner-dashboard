@@ -32,12 +32,9 @@ const getLearnerHeaderMenu = (
     // }]
     //   : []),
     {
-    type: 'component',
-    component: (
-      <p style={{ margin: 0 }}>
-        AI for Business
-      </p>
-    ),
+  type: 'item',
+  content: <span style={{ textDecoration: 'none', pointerEvents: 'none' }}>AI for Business</span>,
+  isActive: true,
   },
   ],
   secondaryMenu: [
