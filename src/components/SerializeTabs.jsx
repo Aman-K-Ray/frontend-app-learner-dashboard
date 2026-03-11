@@ -44,6 +44,7 @@ const SerializeTabs = ({ tabNames }) => {
 
   const serializeCoursesData = tabCourses.map(courseObj => {
     const rawResumeUrl = courseObj.courseRun?.resumeUrl;
+    const rawbannerImgSrc = courseObj.course.bannerImgSrc;
 
     const resolveUrl = (url) => {
       if (!url) return null;
@@ -52,7 +53,7 @@ const SerializeTabs = ({ tabNames }) => {
     };
 
     return {
-      bannerImgSrc: courseObj.course.bannerImgSrc,
+      bannerImgSrc: resolveUrl(rawbannerImgSrc),
       courseName: courseObj.course.courseName,
       homeUrl: courseObj.courseRun?.homeUrl || '',
       shortDescription: courseObj.course.shortDescription,
