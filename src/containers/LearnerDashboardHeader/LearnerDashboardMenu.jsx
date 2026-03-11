@@ -33,7 +33,6 @@ const getLearnerHeaderMenu = (
     //   : []),
     {
     type: 'item',
-    href: '/',
     content: <p style={{ margin: 0 }}>AI for Business</p>,
     isActive: true,
   },

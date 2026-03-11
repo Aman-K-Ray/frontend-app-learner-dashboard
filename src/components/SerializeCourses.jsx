@@ -24,13 +24,12 @@ const SerializeCourses = ({ courses, tabNames }) => {
   const { formatMessage } = useIntl();
   const siteNameMessage = formatMessage(messages['with.site.name'], { siteName: getConfig().SITE_NAME });
 
-  const showBorderTop = courses?.length > 0 && tabNames?.length > 1;
+  const showBorderTop = courses && courses.length > 0 && tabNames && tabNames.length > 1;
   return (
-    <div className={`d-flex pt-4 flex-wrap ${showBorderTop ? 'border-top' : ''}`}>
-      {courses?.length > 0 ? (
+    <div className={`d-flex pt-4 flex-wrap${showBorderTop ? ' border-top' : ''}`}>
+      {courses && courses.length > 0 ? (
         courses.map((course, idx) => {
           if (!course || !course.courseName) return null;
-
           const {
             bannerImgSrc,
             courseName,
@@ -40,97 +39,49 @@ const SerializeCourses = ({ courses, tabNames }) => {
             isStarted,
             isStaff,
           } = course;
-
-          const linkUrl = resumeUrl || homeUrl;
-          const clickable = isStarted || isStaff;
-
+          // Log the homeUrl for debugging
           return (
             <div className="new-card-div" key={idx}>
               <div className="card h-100">
-
-                {clickable ? (
-                  <a
-                    href={linkUrl}
-                    className="course-title-link"
-                    rel="noopener noreferrer"
-                    style={{ height: IMAGE_HEIGHT, width: IMAGE_WIDTH }}
-                  >
+              {isStarted || isStaff ? (
+                    <a href={resumeUrl || homeUrl} className="course-title-link" rel="noopener noreferrer" style={{ height: IMAGE_HEIGHT, width: IMAGE_WIDTH}}>
+                      <img
+                        src={bannerImgSrc}
+                        alt="course thumbnail"
+                        className="card-img-top"
+                        style={{ height: IMAGE_HEIGHT, width: IMAGE_WIDTH, objectFit: 'cover', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+                      /> 
+                    </a>
+                    ) : (
                     <img
                       src={bannerImgSrc}
                       alt="course thumbnail"
                       className="card-img-top"
-                      style={{
-                        height: IMAGE_HEIGHT,
-                        width: IMAGE_WIDTH,
-                        objectFit: 'cover',
-                        borderTopLeftRadius: 8,
-                        borderTopRightRadius: 8,
-                      }}
+                      style={{ height: IMAGE_HEIGHT, width: IMAGE_WIDTH, objectFit: 'cover', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
                     />
-                  </a>
-                ) : (
-                  <img
-                    src={bannerImgSrc}
-                    alt="course thumbnail"
-                    className="card-img-top"
-                    style={{
-                      height: IMAGE_HEIGHT,
-                      width: IMAGE_WIDTH,
-                      objectFit: 'cover',
-                      borderTopLeftRadius: 8,
-                      borderTopRightRadius: 8,
-                    }}
-                  />
-                )}
-
-                <div className="card-body d-flex flex-column">
-
-                  {siteNameMessage === 'IIT Kanpur eMasters Degree' && (
-                    <p>{extractCourseCode(homeUrl)}</p>
                   )}
-
-                  {clickable ? (
-                    <a
-                      href={linkUrl}
-                      className="course-title-link"
-                      rel="noopener noreferrer"
-                    >
-                      <h4 className="card-title fw-semibold mb-2">
-                        {courseName}
-                      </h4>
+                <div className="card-body d-flex flex-column">
+                {siteNameMessage === "IIT Kanpur eMasters Degree" && 
+                  <p>{extractCourseCode(homeUrl)}</p>
+                }
+                  {isStarted || isStaff ? (
+                    <a href={resumeUrl || homeUrl} className="course-title-link" rel="noopener noreferrer">
+                      <h4 className="card-title fw-semibold mb-2">{courseName}</h4>
                     </a>
                   ) : (
-                    <h4 className="card-title fw-semibold mb-2">
-                      {courseName}
-                    </h4>
+                    <h4 className="card-title fw-semibold mb-2">{courseName}</h4>
                   )}
-
                   {shortDescription && (
                     <p className="card-text">{shortDescription}</p>
                   )}
-
                   {!isStarted && !isStaff ? (
                     <button
                       className="btn btn-primary mt-auto px-4 py-2 fw-medium comingup"
                       style={{ fontSize: 15 }}
                       disabled
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"
-                        width="15"
-                        height="15"
-                      >
-                        <path
-                          fill="white"
-                          d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 
-                          35.8-80 80zM80 192V144C80 64.5 144.5 0 224 
-                          0s144 64.5 144 144v48h16c35.3 0 64 28.7 
-                          64 64V448c0 35.3-28.7 64-64 64H64c-35.3 
-                          0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"
-                        />
-                      </svg>
-                      &nbsp;&nbsp;Coming Up
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" height="15"><path fill="white" d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"></path></svg>&nbsp;&nbsp;
+                      Coming Up
                     </button>
                   ) : resumeUrl ? (
                     <a
@@ -151,7 +102,6 @@ const SerializeCourses = ({ courses, tabNames }) => {
                       View Course
                     </a>
                   )}
-
                 </div>
               </div>
             </div>
@@ -165,18 +115,16 @@ const SerializeCourses = ({ courses, tabNames }) => {
 };
 
 SerializeCourses.propTypes = {
-  courses: PropTypes.arrayOf(
-    PropTypes.shape({
-      bannerImgSrc: PropTypes.string,
-      courseName: PropTypes.string,
-      homeUrl: PropTypes.string,
-      shortDescription: PropTypes.string,
-    }),
-  ),
+  courses: PropTypes.arrayOf(PropTypes.shape({
+    bannerImgSrc: PropTypes.string,
+    courseName: PropTypes.string,
+    homeUrl: PropTypes.string,
+    shortDescription: PropTypes.string,
+  })),
 };
 
 SerializeCourses.defaultProps = {
   courses: [],
 };
 
-export default SerializeCourses;
+export default SerializeCourses; 
