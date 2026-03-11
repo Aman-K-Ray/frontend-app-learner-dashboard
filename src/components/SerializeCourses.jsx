@@ -4,7 +4,6 @@ import './SerializeCourses.scss';
 import messages from '../../src/containers/LearnerDashboardHeader/messages';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Link } from 'react-router-dom';
 
 const IMAGE_HEIGHT = 160;
 const IMAGE_WIDTH = '100%';
@@ -45,14 +44,14 @@ const SerializeCourses = ({ courses, tabNames }) => {
             <div className="new-card-div" key={idx}>
               <div className="card h-100">
               {isStarted || isStaff ? (
-                    <Link href={resumeUrl || homeUrl} className="course-title-link" rel="noopener noreferrer" style={{ height: IMAGE_HEIGHT, width: IMAGE_WIDTH}}>
+                    <a href={resumeUrl || homeUrl} className="course-title-link" rel="noopener noreferrer" style={{ height: IMAGE_HEIGHT, width: IMAGE_WIDTH}}>
                       <img
                         src={bannerImgSrc}
                         alt="course thumbnail"
                         className="card-img-top"
                         style={{ height: IMAGE_HEIGHT, width: IMAGE_WIDTH, objectFit: 'cover', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
                       /> 
-                    </Link>
+                    </a>
                     ) : (
                     <img
                       src={bannerImgSrc}
@@ -66,9 +65,9 @@ const SerializeCourses = ({ courses, tabNames }) => {
                   <p>{extractCourseCode(homeUrl)}</p>
                 }
                   {isStarted || isStaff ? (
-                    <Link href={resumeUrl || homeUrl} className="course-title-link" rel="noopener noreferrer">
+                    <a href={resumeUrl || homeUrl} className="course-title-link" rel="noopener noreferrer">
                       <h4 className="card-title fw-semibold mb-2">{courseName}</h4>
-                    </Link>
+                    </a>
                   ) : (
                     <h4 className="card-title fw-semibold mb-2">{courseName}</h4>
                   )}
@@ -85,22 +84,23 @@ const SerializeCourses = ({ courses, tabNames }) => {
                       Coming Up
                     </button>
                   ) : resumeUrl ? (
-                    <Link
-                      to={resumeUrl}
+                    <a
+                      href={resumeUrl}
+                      rel="noopener noreferrer"
                       className="btn btn-primary mt-auto px-4 py-2 fw-medium"
                       style={{ fontSize: 15 }}
                     >
                       Resume
-                    </Link>
+                    </a>
                   ) : (
-                    <Link
+                    <a
                       href={homeUrl}
                       rel="noopener noreferrer"
                       className="btn btn-primary mt-auto px-4 py-2 fw-medium"
                       style={{ fontSize: 15 }}
                     >
                       View Course
-                    </Link>
+                    </a>
                   )}
                 </div>
               </div>

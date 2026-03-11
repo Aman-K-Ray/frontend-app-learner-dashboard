@@ -38,16 +38,29 @@ const SerializeTabs = ({ tabNames }) => {
     : [];
   console.log('[SerializeTabs] tabCourses =', tabCourses);
 
-  const serializeCoursesData = tabCourses.map(courseObj => ({
-    bannerImgSrc: courseObj.course.bannerImgSrc,
-    courseName: courseObj.course.courseName,
-    homeUrl: courseObj.courseRun?.homeUrl || '',
-    shortDescription: courseObj.course.shortDescription,
-    courseNumber: courseObj.course.courseNumber,
-    isStarted: courseObj.courseRun?.isStarted,
-    resumeUrl: courseObj.courseRun?.resumeUrl,
-    isStaff: courseObj.enrollment.coursewareAccess?.isStaff,
-  }));
+  // In your component, update the mapping:
+  const lmsBaseUrl = getConfig().LMS_BASE_URL;
+
+  const serializeCoursesData = tabCourses.map(courseObj => {
+    const rawResumeUrl = courseObj.courseRun?.resumeUrl;
+
+    const resolveUrl = (url) => {
+      if (!url) return null;
+      if (url.startsWith('https')) return url;        // already absolute
+      return `${lmsBaseUrl}${url}`;                  // prepend LMS base
+    };
+
+    return {
+      bannerImgSrc: courseObj.course.bannerImgSrc,
+      courseName: courseObj.course.courseName,
+      homeUrl: courseObj.courseRun?.homeUrl || '',
+      shortDescription: courseObj.course.shortDescription,
+      courseNumber: courseObj.course.courseNumber,
+      isStarted: courseObj.courseRun?.isStarted,
+      resumeUrl: resolveUrl(rawResumeUrl),           // now absolute
+      isStaff: courseObj.enrollment.coursewareAccess?.isStaff,
+    };
+  });
   console.log('[SerializeTabs] serializeCoursesData =', serializeCoursesData);
 
   return (
