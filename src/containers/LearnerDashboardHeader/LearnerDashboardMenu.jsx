@@ -11,26 +11,32 @@ const getLearnerHeaderMenu = (
   exploreCoursesClick,
 ) => ({
   mainMenu: [
+    // {
+    //   type: 'item',
+    //   href: '/',
+    //   content: formatMessage(messages.course),
+    //   isActive: true,
+    // },
+    // ...(getConfig().ENABLE_PROGRAMS ? [{
+    //   type: 'item',
+    //   href: `${urls.programsUrl()}`,
+    //   content: formatMessage(messages.program),
+    // }] : []),
+    // ...(!getConfig().NON_BROWSABLE_COURSES ? [{
+    //   type: 'item',
+    //   href: `${urls.baseAppUrl(courseSearchUrl)}`,
+    //   content: formatMessage(messages.discoverNew),
+    //   onClick: (e) => {
+    //     exploreCoursesClick(e);
+    //   },
+    // }]
+    //   : []),
     {
-      type: 'item',
-      href: '/',
-      content: formatMessage(messages.course),
-      isActive: true,
-    },
-    ...(getConfig().ENABLE_PROGRAMS ? [{
-      type: 'item',
-      href: `${urls.programsUrl()}`,
-      content: formatMessage(messages.program),
-    }] : []),
-    ...(!getConfig().NON_BROWSABLE_COURSES ? [{
-      type: 'item',
-      href: `${urls.baseAppUrl(courseSearchUrl)}`,
-      content: formatMessage(messages.discoverNew),
-      onClick: (e) => {
-        exploreCoursesClick(e);
-      },
-    }]
-      : []),
+    type: 'item',
+    href: '/',
+    content: <p style={{ margin: 0 }}>AI for Business</p>,
+    isActive: true,
+  },
   ],
   secondaryMenu: [
     ...(getConfig().SUPPORT_URL ? [{
