@@ -94,7 +94,7 @@ export const App = () => {
             </main>
           </AppWrapper>
         </ActiveTabProvider>
-        <FooterSlot />
+        <FooterSlot logo={getConfig().LOGO_TRADEMARK_URL} />
       </div>
     </>
   );
